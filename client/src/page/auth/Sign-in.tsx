@@ -79,7 +79,7 @@ const SignIn = () => {
           className="flex items-center gap-2 self-center font-medium"
         >
           <Logo disableLink />
-          Team Sync.
+          Task Manager
         </Link>
         <div className="flex flex-col gap-6">
           <Card>
