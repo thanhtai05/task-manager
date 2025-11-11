@@ -1,0 +1,11 @@
+export const getEnv = (key: string, defaultValue?: string): string => {
+  const value = process.env[key];
+  if (value === undefined) {
+    // If a defaultValue is provided (including empty string), return it
+    if (defaultValue !== undefined) {
+      return defaultValue;
+    }
+    throw new Error(`Enviroment variable ${key} is not set`);
+  }
+  return value;
+};
