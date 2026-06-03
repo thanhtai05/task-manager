@@ -14,7 +14,21 @@ const AuthRoute = () => {
 
   if (!user) return <Outlet />;
 
-  return <Navigate to={`workspace/${user.currentWorkspace?._id}`} replace />;
+  if (!_isAuthRoute) return <Outlet />;
+
+  const currentWorkspaceId =
+    typeof user.currentWorkspace === "string"
+      ? user.currentWorkspace
+      : user.currentWorkspace?._id;
+
+  if (!currentWorkspaceId) {
+    return <Outlet />;
+  }
+
+  const urlParams = new URLSearchParams(location.search);
+  const returnUrl = urlParams.get("returnUrl");
+
+  return <Navigate to={returnUrl || `/workspace/${currentWorkspaceId}`} replace />;
 };
 
 export default AuthRoute;

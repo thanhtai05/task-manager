@@ -77,7 +77,7 @@ export const loginOrCreateAccountService = async (data: {
     session.endSession();
     console.log("End Session...");
 
-    return { user };
+    return { user: user.omitPassword() };
   } catch (error) {
     await session.abortTransaction();
     session.endSession();

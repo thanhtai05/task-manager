@@ -101,7 +101,7 @@ export const forgotPasswordController = asyncHandler(
     const body = forgotPasswordSchema.parse(req.body);
     const { token, expires } = await requestPasswordResetService(body.email);
 
-    // Build a reset URL for convenience in development
+    // Build a uy7eURL for convenience in development
     const resetUrl = `${config.FRONTEND_ORIGIN}/reset-password?token=${token}`;
 
     return res.status(HTTPSTATUS.OK).json({

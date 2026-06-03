@@ -31,6 +31,16 @@ export const getMemberRoleInWorkspace = async (
   }
 
   const roleName = member.role?.name;
+  if (!roleName) {
+    if (workspace.owner?.toString() === userId.toString()) {
+      return { role: Roles.OWNER };
+    }
+
+    throw new UnauthorizedException(
+      "Your workspace role is missing or invalid",
+      ErrorCodeEnum.ACCESS_UNAUTHORIZED
+    );
+  }
 
   return { role: roleName };
 };

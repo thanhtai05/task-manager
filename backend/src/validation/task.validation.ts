@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TaskPriorityEnum, TaskStatusEnum } from "../enums/task.enum";
+import { objectIdSchema } from "./workspace.validation";
 
 export const titleSchema = z.string().trim().min(1).max(255);
 export const descriptionSchema = z.string().trim().optional();
@@ -27,7 +28,7 @@ export const dueDateSchema = z
     }
   );
 
-export const taskIdSchema = z.string().trim().min(1);
+export const taskIdSchema = objectIdSchema;
 
 export const createTaskSchema = z.object({
   title: titleSchema,

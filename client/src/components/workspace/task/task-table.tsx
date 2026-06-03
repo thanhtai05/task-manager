@@ -4,7 +4,7 @@ import { DataTable } from "./table/table";
 import { useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { RotateCw, X } from "lucide-react";
 import { DataTableFacetedFilter } from "./table/table-faceted-filter";
 import { priorities, statuses } from "./table/data";
 import useTaskTableFilter from "@/hooks/use-task-table-filter";
@@ -227,7 +227,7 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
           }
         >
           Reset
-          <X />
+          <RotateCw className=" h-4 w-4" />
         </Button>
       )}
     </div>
@@ -235,3 +235,4 @@ const DataTableFilterToolbar: FC<DataTableFilterToolbarProps> = ({
 };
 
 export default TaskTable;
+5

@@ -10,7 +10,11 @@ export const getCurrentUserService = async (userId: string) => {
     throw new BadRequestException("User not found");
   }
 
+  const safeUser = user.toObject();
+  delete (safeUser as any).passwordResetToken;
+  delete (safeUser as any).passwordResetExpires;
+
   return {
-    user,
+    user: safeUser,
   };
 };

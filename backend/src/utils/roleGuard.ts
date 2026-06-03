@@ -3,11 +3,21 @@ import { UnauthorizedException } from "./appError";
 import { RolePermissions } from "./role-permission";
 
 export const roleGuard = (
-  role: keyof typeof RolePermissions,
+  role: keyof typeof RolePermissions | undefined,
   requiredPermissions: PermissionType[]
 ) => {
+  if (!role || !Object.prototype.hasOwnProperty.call(RolePermissions, role)) {
+    throw new UnauthorizedException(
+      "You do not have the necessary permissions to perform this action"
+    );
+  }
+
   const permissions = RolePermissions[role];
-  // If the role doesn't exist or lacks required permissions, throw an exception
+  if (!permissions || !Array.isArray(permissions)) {
+    throw new UnauthorizedException(
+      "You do not have the necessary permissions to perform this action"
+    );
+  }
 
   const hasPermission = requiredPermissions.every((permission) =>
     permissions.includes(permission)

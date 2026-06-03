@@ -4,7 +4,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
 
 import { config } from "./app.config";
-import { NotFoundException } from "../utils/appError";
+import { AppError, NotFoundException } from "../utils/appError";
 import { ProviderEnum } from "../enums/account-provider.enum";
 import {
   loginOrCreateAccountService,
@@ -56,6 +56,9 @@ passport.use(
         const user = await verifyUserService({ email, password });
         return done(null, user);
       } catch (error: any) {
+        if (error instanceof AppError) {
+          return done(null, false, { message: error.message });
+        }
         return done(error, false, { message: error?.message });
       }
     }

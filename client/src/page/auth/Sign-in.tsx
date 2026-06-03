@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Logo from "@/components/logo";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { loginMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
@@ -29,6 +29,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const returnUrl = searchParams.get("returnUrl");
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationFn: loginMutationFn,
@@ -57,9 +58,20 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (data) => {
         const user = data.user;
-        console.log(user);
+        queryClient.setQueryData(["authUser"], { user });
+
+        const workspaceId =
+          typeof user.currentWorkspace === "string"
+            ? user.currentWorkspace
+            : (user.currentWorkspace as any)?._id;
         const decodedUrl = returnUrl ? decodeURIComponent(returnUrl) : null;
-        navigate(decodedUrl || `/workspace/${user.currentWorkspace}`);
+
+        if (!workspaceId) {
+          navigate(decodedUrl || "/");
+          return;
+        }
+
+        navigate(decodedUrl || `/workspace/${workspaceId}`);
       },
       onError: (error) => {
         toast({
