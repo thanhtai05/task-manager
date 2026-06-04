@@ -73,7 +73,8 @@ app.use(`${BASE_PATH}/task`, isAuthenticated, taskRoutes);
 
 app.use(errorHandler);
 
-const startServer = async () => {
+app.listen(config.PORT, async () => {
+  console.log(`Server listening on port ${config.PORT} in ${config.NODE_ENV}`);
   await connectDatabase();
   await bootstrapRoles();
   if (config.NODE_ENV === "development") {
@@ -85,13 +86,4 @@ const startServer = async () => {
       console.log("[seed-multi] Disabled");
     }
   }
-
-  app.listen(config.PORT, () => {
-    console.log(`Server listening on port ${config.PORT} in ${config.NODE_ENV}`);
-  });
-};
-
-startServer().catch((error) => {
-  console.error("Failed to start server", error);
-  process.exit(1);
 });

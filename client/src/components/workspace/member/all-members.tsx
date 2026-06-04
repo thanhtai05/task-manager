@@ -81,7 +81,7 @@ const AllMembers = () => {
         const initials = getAvatarFallbackText(name);
         const avatarColor = getAvatarColor(name);
         return (
-          <div className="flex items-center justify-between space-x-4">
+          <div key={member._id} className="flex items-center justify-between space-x-4">
             <div className="flex items-center space-x-4">
               <Avatar className="h-8 w-8">
                 <AvatarImage
@@ -112,7 +112,7 @@ const AllMembers = () => {
                       member.userId._id === user?._id
                     }
                   >
-                    {member.role.name?.toLowerCase()}{" "}
+                    {member.role?.name?.toLowerCase() || "Unknown"}{" "}
                     {canChangeMemberRole && member.userId._id !== user?._id && (
                       <ChevronDown className="text-muted-foreground" />
                     )}
@@ -133,9 +133,9 @@ const AllMembers = () => {
                           <>
                             <CommandEmpty>No roles found.</CommandEmpty>
                             <CommandGroup>
-                              {roles?.map(
+                              {roles?.filter(role => role?.name).map(
                                 (role) =>
-                                  role.name !== "OWNER" && (
+                                  role?.name !== "OWNER" && (
                                     <CommandItem
                                       key={role._id}
                                       disabled={isLoading}
@@ -148,13 +148,13 @@ const AllMembers = () => {
                                       }}
                                     >
                                       <p className="capitalize">
-                                        {role.name?.toLowerCase()}
+                                        {role?.name?.toLowerCase()}
                                       </p>
                                       <p className="text-sm text-muted-foreground">
-                                        {role.name === "ADMIN" &&
+                                        {role?.name === "ADMIN" &&
                                           `Can view, create, edit tasks, project and manage settings .`}
 
-                                        {role.name === "MEMBER" &&
+                                        {role?.name === "MEMBER" &&
                                           `Can view,edit only task created by.`}
                                       </p>
                                     </CommandItem>
